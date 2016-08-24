@@ -10,7 +10,7 @@ resource_xml = files ('dayslicelite.gresources.xml')
 resource = gnome.compile_resources ('dayslicelite', 'dayslicelite.gresources.xml', source_dir: '.', c_name: 'dayslicelite')
 
 executable('dayslice-lite',
-    'main.vala', 'appwin.vala', resource,
+    'main.vala', 'appwin.vala', 'fsm.vala', resource,
     vala_args: ['--vapidir', meson.source_root(), '--pkg', 'posix', '--target-glib=2.38', '--gresources', resource_xml],
     c_args: ['-w'],
     dependencies: [gobject, glib, gtk])
