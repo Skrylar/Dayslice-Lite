@@ -7,22 +7,26 @@
 (define fsm
   '((idle
      (tick . idle)
+     (cancel . idle)
      (change_timeout . set)
      (set_break . running)
      (set_work . running))
     (set
      (tick . set)
+     (cancel . idle)
      (change_timeout . set)
      (set_break . running)
      (set_work . running))
     (running
      (tick . running)
+     (cancel . idle)
      (expire . expired)
      (change_timeout . running)
      (set_break . running)
      (set_work . running))
     (expired
      (tick . expired)
+     (cancel . idle)
      (change_timeout . set)
      (set_break . running)
      (set_work . running))))
