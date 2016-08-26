@@ -13,4 +13,5 @@ executable('dayslice-lite',
     'main.vala', 'appwin.vala', 'fsm.vala', resource,
     vala_args: ['--vapidir', meson.source_root(), '--pkg', 'posix', '--target-glib=2.38', '--gresources', resource_xml],
     c_args: ['-w'],
+    link_args: ['-lm'],
     dependencies: [gobject, glib, gtk])
