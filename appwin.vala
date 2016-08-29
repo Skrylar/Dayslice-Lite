@@ -98,7 +98,7 @@ namespace Dayslice.Lite {
 			// they acknowledge the end of a slice, or ask if they
 			// want to extend the slice, but right now all we do is
 			// annoy the user and wait for something to do.
-			state_machine.send (FSM.Messages.cancel);
+			state_machine.send (FSM.Message.CANCEL);
 		}
 
 		// handle the passage of time
