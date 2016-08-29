@@ -118,7 +118,9 @@ namespace Dayslice.Lite {
 					// TODO make sure window is on the screen
 					int minutes = (int)(diff / TimeSpan.MINUTE);
 					remaining_label.label = "%d minutes".printf (minutes);
+					timeout_adjustment.value = (double)minutes / 5.0;
 				} else {
+					timeout_adjustment.value = 0.0;
 					state_machine.send (FSM.Message.EXPIRE);
 				}
 			}
