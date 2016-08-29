@@ -114,7 +114,7 @@ namespace Dayslice.Lite {
 				expiry = expiry.add_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 			} else {
-				if (diff > 0) {
+				if (diff < 1) {
 					// TODO make sure window is on the screen
 					int minutes = (int)(diff / TimeSpan.MINUTE);
 					remaining_label.label = "%d minutes".printf (minutes);
