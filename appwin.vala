@@ -90,6 +90,25 @@ namespace Dayslice.Lite {
 		// handle the passage of time
 
 		internal bool on_tick () {
+			var now = new DateTime.now_local ();
+			var diff = now.difference (expiry);
+
+			if (state_machine.state != FSM.State.RUNNING) {
+				var minutes = (int)timeout_adjustment.value * 5;
+				state_machine.send (FSM.Message.CHANGE_TIMEOUT);
+				expiry = new DateTime.now_local ();
+				expiry = expiry.add_minutes (minutes);
+				expiry_label.label = expiry.format ("%l:%M %p");
+			} else {
+				if (diff > 0) {
+					// TODO make sure window is on the screen
+					int minutes = (int)(diff / TimeSpan.MINUTE);
+					remaining_label.label = "%d minutes".printf (minutes);
+				} else {
+					state_machine.send (FSM.Message.EXPIRE);
+				}
+			}
+
 			// TODO check if we just expired
 			return Source.CONTINUE;
 		}
