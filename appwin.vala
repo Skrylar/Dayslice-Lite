@@ -12,6 +12,8 @@ namespace Dayslice.Lite {
 		internal Gtk.Label remaining_label;
 		[GtkChild]
 		internal Gtk.Label expiry_label;
+		[GtkChild]
+		internal Gtk.Revealer timer_revealer;
 
 		internal DateTime expiry;
 
@@ -64,6 +66,7 @@ namespace Dayslice.Lite {
 
 		internal void wire_state_debug () {
 			state_machine.entered_idle.connect (on_entered_idle);
+			state_machine.exited_idle.connect (on_exited_idle);
 			state_machine.entered_set.connect (on_entered_set);
 			state_machine.entered_running.connect (on_entered_running);
 			state_machine.entered_expired.connect (on_entered_expired);
@@ -71,8 +74,13 @@ namespace Dayslice.Lite {
 
 		// react to state changes
 
+		internal void on_exited_idle () {
+			timer_revealer.reveal_child = true;
+		}
+
 		internal void on_entered_idle () {
 			statuslabel.label = "Select a time with the slider above.";
+			timer_revealer.reveal_child = false;
 		}
 
 		internal void on_entered_set () {
@@ -84,7 +92,13 @@ namespace Dayslice.Lite {
 		}
 
 		internal void on_entered_expired () {
-			statuslabel.label = "";
+			// NB immediately cancel the expiry state; sends us back
+			// to idle. we might do something clever in the future
+			// like wait for the user to acknowledge expiry, nag until
+			// they acknowledge the end of a slice, or ask if they
+			// want to extend the slice, but right now all we do is
+			// annoy the user and wait for something to do.
+			state_machine.send (FSM.Messages.cancel);
 		}
 
 		// handle the passage of time
