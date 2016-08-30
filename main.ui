@@ -170,30 +170,16 @@
             <property name="layout_style">start</property>
             <child>
               <object class="GtkButton">
-                <property name="label" translatable="yes">Start Break</property>
+                <property name="label" translatable="yes">Start</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="start_break" swapped="no"/>
+                <signal name="clicked" handler="start" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Start Work</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="start_work" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
               </packing>
             </child>
           </object>

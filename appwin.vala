@@ -34,16 +34,9 @@ namespace Dayslice.Lite {
 		}
 
 		[GtkCallback]
-		internal void start_work () {
+		internal void start () {
 			if (timeout_adjustment.value >= 0.1) {
-				state_machine.send (FSM.Message.SET_WORK);
-			}
-		}
-
-		[GtkCallback]
-		internal void start_break () {
-			if (timeout_adjustment.value >= 0.1) {
-				state_machine.send (FSM.Message.SET_BREAK);
+				state_machine.send (FSM.Message.START);
 			}
 		}
 
@@ -84,11 +77,11 @@ namespace Dayslice.Lite {
 		}
 
 		internal void on_entered_set () {
-			statuslabel.label = "Now choose 'work' or 'break.'";
+			statuslabel.label = "Now press 'Start.'";
 		}
 
 		internal void on_entered_running () {
-			statuslabel.label = "Running.";
+			statuslabel.label = "";
 		}
 
 		internal void on_entered_expired () {
