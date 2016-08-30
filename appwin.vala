@@ -88,7 +88,7 @@ namespace Dayslice.Lite {
 		}
 
 		internal void on_entered_running () {
-			statuslabel.label = "";
+			statuslabel.label = "Running.";
 		}
 
 		internal void on_entered_expired () {
@@ -98,7 +98,8 @@ namespace Dayslice.Lite {
 			// they acknowledge the end of a slice, or ask if they
 			// want to extend the slice, but right now all we do is
 			// annoy the user and wait for something to do.
-			state_machine.send (FSM.Message.CANCEL);
+			statuslabel.label = "Time's up.";
+			timeout_adjustment.value = 0.0;
 		}
 
 		// handle the passage of time
@@ -114,13 +115,14 @@ namespace Dayslice.Lite {
 				expiry = expiry.add_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 			} else {
-				if (diff < 1) {
+				if (diff < 0) {
 					// TODO make sure window is on the screen
-					int minutes = (int)(diff / TimeSpan.MINUTE);
+					int minutes = ((int)(diff / TimeSpan.MINUTE)).abs ();
 					remaining_label.label = "%d minutes".printf (minutes);
-					timeout_adjustment.value = (double)minutes / 5.0;
+					if (minutes % 5 == 0) {
+						timeout_adjustment.value = (double)minutes;
+					}
 				} else {
-					timeout_adjustment.value = 0.0;
 					state_machine.send (FSM.Message.EXPIRE);
 				}
 			}
