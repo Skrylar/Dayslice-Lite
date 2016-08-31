@@ -127,10 +127,10 @@ namespace Dayslice.Lite {
 			} else {
 				if (diff < 0) {
 					// TODO make sure window is on the screen
-					int minutes = ((int)(diff / TimeSpan.MINUTE)).abs ();
+					int minutes = (int)(diff.abs () / TimeSpan.MINUTE);
 					remaining_label.label = "%d minutes".printf (minutes);
 					if (minutes % 5 == 0) {
-						timeout_adjustment.value = (double)minutes;
+						timeout_adjustment.value = (double)minutes / 5;
 					}
 				} else {
 					state_machine.send (FSM.Message.EXPIRE);
