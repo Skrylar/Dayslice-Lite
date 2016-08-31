@@ -14,6 +14,12 @@ namespace Dayslice.Lite {
 		internal Gtk.Label expiry_label;
 		[GtkChild]
 		internal Gtk.Revealer timer_revealer;
+		[GtkChild]
+		internal Gtk.Stack buttonstack;
+		[GtkChild]
+		internal Gtk.ButtonBox idle_buttonbox;
+		[GtkChild]
+		internal Gtk.ButtonBox running_buttonbox;
 
 		internal DateTime expiry;
 
@@ -41,6 +47,11 @@ namespace Dayslice.Lite {
 		}
 
 		[GtkCallback]
+		internal void cancel () {
+			state_machine.send (FSM.Message.CANCEL);
+		}
+
+		[GtkCallback]
 		internal void adjust_timeout () {
 			timeout_adjustment.value = (double)Math.llround  (timeout_adjustment.value);
 			if (timeout_adjustment.value <= 0.1) {
@@ -61,6 +72,7 @@ namespace Dayslice.Lite {
 			state_machine.entered_idle.connect (on_entered_idle);
 			state_machine.exited_idle.connect (on_exited_idle);
 			state_machine.entered_set.connect (on_entered_set);
+			state_machine.exited_running.connect (on_exited_running);
 			state_machine.entered_running.connect (on_entered_running);
 			state_machine.entered_expired.connect (on_entered_expired);
 		}
@@ -80,8 +92,13 @@ namespace Dayslice.Lite {
 			statuslabel.label = "Now press 'Start.'";
 		}
 
+		internal void on_exited_running () {
+			buttonstack.set_visible_child (idle_buttonbox);
+		}
+
 		internal void on_entered_running () {
 			statuslabel.label = "";
+			buttonstack.set_visible_child (running_buttonbox);
 		}
 
 		internal void on_entered_expired () {
