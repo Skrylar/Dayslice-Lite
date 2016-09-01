@@ -43,6 +43,7 @@ namespace Dayslice {
 				var notice = new Notification ("Dayslice Lite");
 				notice.set_body ("Your timer is now running.");
 				notice.set_priority (GLib.NotificationPriority.LOW);
+				app.withdraw_notification ("dsl.timer");
 				app.send_notification ("dsl.timer", notice);
 			}
 
@@ -50,11 +51,12 @@ namespace Dayslice {
 				var notice = new Notification ("Dayslice Lite");
 				notice.set_body ("Timer has expired.");
 				notice.set_priority (GLib.NotificationPriority.URGENT);
+				app.withdraw_notification ("dsl.timer");
 				app.send_notification ("dsl.timer", notice);
 			}
 
 			public void trigger_withdraw (Gtk.Application app) {
-				app.withdraw_notification ("dsk.timer");
+				app.withdraw_notification ("dsl.timer");
 			}
 		}
 	} /* Lite */

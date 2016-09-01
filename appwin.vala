@@ -125,13 +125,13 @@ namespace Dayslice.Lite {
 				expiry = now.add_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 			} else {
-				var diff = now.difference (expiry);
-				if (diff < 0) {
+				var diff = expiry.difference (now) / TimeSpan.MINUTE;
+				stdout.printf("%d\n", (int)diff);
+				if (diff < 1) {
 					// TODO make sure window is on the screen
-					int minutes = (int)(diff.abs () / TimeSpan.MINUTE);
-					remaining_label.label = "%d minutes".printf (minutes);
-					if (minutes % 5 == 0) {
-						timeout_adjustment.value = (double)minutes / 5;
+					remaining_label.label = "%d minutes".printf ((int)diff);
+					if (diff % 5 == 0) {
+						timeout_adjustment.value = (double)diff / 5;
 					}
 				} else {
 					state_machine.send (FSM.Message.EXPIRE);
