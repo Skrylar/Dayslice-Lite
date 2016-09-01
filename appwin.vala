@@ -32,7 +32,7 @@ namespace Dayslice.Lite {
 			wire_state_debug ();
 			on_entered_idle ();
 			Timeout.add_seconds (60, this.on_tick);
-			user_notifier = new StdoutNotifier ();
+			user_notifier = new GLibNotifier ();
 		}
 
 		// UI callbacks
@@ -101,7 +101,7 @@ namespace Dayslice.Lite {
 		internal void on_entered_running () {
 			statuslabel.label = "";
 			buttonstack.set_visible_child (running_buttonbox);
-			user_notifier.trigger_started ();
+			user_notifier.trigger_started (application);
 		}
 
 		internal void on_entered_expired () {
@@ -112,7 +112,7 @@ namespace Dayslice.Lite {
 			// want to extend the slice, but right now all we do is
 			// annoy the user and wait for something to do.
 			statuslabel.label = "Time's up.";
-			user_notifier.trigger_finished ();
+			user_notifier.trigger_finished (application);
 			timeout_adjustment.value = 0.0;
 		}
 
