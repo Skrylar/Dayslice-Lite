@@ -60,11 +60,11 @@ namespace Dayslice.Lite {
 				state_machine.send (FSM.Message.CANCEL);
 			} else {
 				var minutes = (int)timeout_adjustment.value * 5;
-				state_machine.send (FSM.Message.CHANGE_TIMEOUT);
 				expiry = new DateTime.now_local ();
 				expiry = expiry.add_minutes (minutes);
 				remaining_label.label = "%d minutes".printf (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
+				state_machine.send (FSM.Message.CHANGE_TIMEOUT);
 			}
 		}
 
@@ -120,15 +120,12 @@ namespace Dayslice.Lite {
 
 		internal bool on_tick () {
 			var now = new DateTime.now_local ();
-			var diff = now.difference (expiry);
-
 			if (state_machine.state != FSM.State.RUNNING) {
 				var minutes = (int)timeout_adjustment.value * 5;
-				state_machine.send (FSM.Message.CHANGE_TIMEOUT);
-				expiry = new DateTime.now_local ();
-				expiry = expiry.add_minutes (minutes);
+				expiry = now.add_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 			} else {
+				var diff = now.difference (expiry);
 				if (diff < 0) {
 					// TODO make sure window is on the screen
 					int minutes = (int)(diff.abs () / TimeSpan.MINUTE);
