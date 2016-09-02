@@ -7,6 +7,8 @@ namespace Dayslice.Lite {
 
 		protected override void activate () {
 			var appwin = new MainWindow (this);
+			appwin.user_notifier = new GLibNotifier ();
+			appwin.time_provider = new RealTimeProvider ();
 			appwin.show_all ();
 		}
 

@@ -4,6 +4,9 @@ namespace Dayslice.Lite {
 		// stuff attached to the interface
 		public UserNotifier user_notifier { get; set; }
 
+		// provides time through a mockable interface
+		public TimeProvider time_provider { get; set; }
+
 		[GtkChild]
 		internal Gtk.Adjustment timeout_adjustment;
 
@@ -32,7 +35,6 @@ namespace Dayslice.Lite {
 			wire_state_debug ();
 			on_entered_idle ();
 			Timeout.add_seconds (60, this.on_tick);
-			user_notifier = new GLibNotifier ();
 		}
 
 		// UI callbacks
@@ -60,7 +62,7 @@ namespace Dayslice.Lite {
 				state_machine.send (FSM.Message.CANCEL);
 			} else {
 				var minutes = (int)timeout_adjustment.value * 5;
-				expiry = new DateTime.now_local ();
+				expiry = time_provider.now ();
 				expiry = expiry.add_minutes (minutes);
 				remaining_label.label = "%d minutes".printf (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
@@ -119,19 +121,22 @@ namespace Dayslice.Lite {
 		// handle the passage of time
 
 		internal bool on_tick () {
-			var now = new DateTime.now_local ();
+			var now = time_provider.now ();
 			if (state_machine.state != FSM.State.RUNNING) {
 				var minutes = (int)timeout_adjustment.value * 5;
 				expiry = now.add_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 			} else {
 				var diff = expiry.difference (now) / TimeSpan.MINUTE;
-				stdout.printf("%d\n", (int)diff);
-				if (diff < 1) {
+				if (diff > 1) {
 					// TODO make sure window is on the screen
 					remaining_label.label = "%d minutes".printf ((int)diff);
 					if (diff % 5 == 0) {
-						timeout_adjustment.value = (double)diff / 5;
+						var value = (diff / 5);
+						if (value < 0.1) {
+							state_machine.send (FSM.Message.EXPIRE);
+						}
+						timeout_adjustment.value = (double)value;
 					}
 				} else {
 					state_machine.send (FSM.Message.EXPIRE);
