@@ -59,5 +59,41 @@ namespace Dayslice {
 				app.withdraw_notification ("dsl.timer");
 			}
 		}
+
+		public class MockNotifier : GLib.Object, UserNotifier {
+			public MockNotifier () {
+			}
+
+			~MockNotifier () {}
+
+			// used to determine if triggers have been tripped since
+			// we last reset them
+			protected uint code = 1;
+			protected uint code_started = 0;
+			protected uint code_finished = 0;
+
+			public void reset () {
+				code++;
+			}
+
+			public void trigger_started (Gtk.Application app) {
+				code_started = code;
+			}
+
+			public bool has_started () {
+				return code == code_started;
+			}
+
+			public void trigger_finished (Gtk.Application app) {
+				code_finished = code;
+			}
+
+			public bool has_finished () {
+				return code == code_finished;
+			}
+
+			public void trigger_withdraw (Gtk.Application app) {
+			}
+		}
 	} /* Lite */
 } /* Dayslice */

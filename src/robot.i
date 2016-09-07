@@ -20,3 +20,4 @@ gboolean dayslice_lite_robot_overlord_step_while_running ();
 gboolean dayslice_lite_robot_overlord_timer_should_be_idle ();
 gboolean dayslice_lite_robot_overlord_timer_should_be_running ();
 gboolean dayslice_lite_robot_overlord_user_was_notified_of_expired_timer ();
+gboolean dayslice_lite_robot_overlord_user_was_not_notified_of_expired_timer ();

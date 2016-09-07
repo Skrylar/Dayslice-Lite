@@ -16,8 +16,8 @@ namespace Dayslice.Lite {
 			appwin.time_provider = new RealTimeProvider ();
 #else /* ROBOTICIZED */
 			RobotOverlord.main_window = appwin;
-			appwin.user_notifier = new GLibNotifier (); // TODO
-			appwin.time_provider = new RealTimeProvider (); // TODO
+			appwin.user_notifier = new MockNotifier ();
+			appwin.time_provider = new MockTimeProvider ();
 #endif /* ROBOTICIZED */
 			appwin.show_all ();
 		}

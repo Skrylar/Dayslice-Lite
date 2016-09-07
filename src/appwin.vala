@@ -57,7 +57,7 @@ namespace Dayslice.Lite {
 
 		[GtkCallback]
 		internal void adjust_timeout () {
-			timeout_adjustment.value = (double)Math.llround  (timeout_adjustment.value);
+			timeout_adjustment.value = (double)Math.llround (timeout_adjustment.value);
 			if (timeout_adjustment.value <= 0.1) {
 				state_machine.send (FSM.Message.CANCEL);
 			} else {

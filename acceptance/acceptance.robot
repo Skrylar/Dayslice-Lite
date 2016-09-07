@@ -3,6 +3,7 @@ Library	     dayslicelite.py
 
 *** Test Cases ***
 Start and cancel a basic timer
+      User was not notified of expired timer
       Set remaining minutes	10
       Start timer
       Timer should be running
@@ -10,6 +11,7 @@ Start and cancel a basic timer
       Timer should be idle
 
 Alert a user when their timer has expired
+      User was not notified of expired timer
       Set remaining minutes	25
       Start timer
       Step while running

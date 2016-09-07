@@ -43,12 +43,20 @@ namespace Dayslice.Lite {
 			main_window.start ();
 			main_context.release ();
 			sync ();
-			return false;
+			return true;
 		}
 
 		public static bool step_while_running () {
 			sync ();
-			assert_not_reached (); // TODO
+			main_context.acquire ();
+			while (main_window.state_machine.state == FSM.State.RUNNING) {
+				((MockTimeProvider)main_window.time_provider).step (1);
+				main_window.on_tick ();
+			}
+			// TODO
+			main_context.release ();
+			sync ();
+			return true;
 		}
 
 		public static bool timer_should_be_idle () {
@@ -63,7 +71,12 @@ namespace Dayslice.Lite {
 
 		public static bool user_was_notified_of_expired_timer () {
 			sync ();
-			assert_not_reached (); // TODO
+			return ((MockNotifier)main_window.user_notifier).has_finished ();
+		}
+
+		public static bool user_was_not_notified_of_expired_timer () {
+			sync ();
+			return !((MockNotifier)main_window.user_notifier).has_finished ();
 		}
 	}
 } /* Dayslice.Lite */
