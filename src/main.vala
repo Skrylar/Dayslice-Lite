@@ -5,12 +5,18 @@ namespace Dayslice.Lite {
 				   flags: ApplicationFlags.FLAGS_NONE);
 		}
 
+		internal MainWindow appwin;
+
 #if ROBOTICIZED
 		public RobotOverlord overlord { get; set; }
 #endif /* ROBOTICIZED */
 
 		protected override void activate () {
-			var appwin = new MainWindow (this);
+			if (appwin != null) {
+				appwin.present ();
+				return;
+			}
+			appwin = new MainWindow (this);
 #if !ROBOTICIZED
 			appwin.user_notifier = new GLibNotifier ();
 			appwin.time_provider = new RealTimeProvider ();
