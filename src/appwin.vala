@@ -104,6 +104,7 @@ namespace Dayslice.Lite {
 			statuslabel.label = "";
 			buttonstack.set_visible_child (running_buttonbox);
 			user_notifier.trigger_started (application);
+			this.hide ();
 		}
 
 		internal void on_entered_expired () {
