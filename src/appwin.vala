@@ -32,7 +32,7 @@ namespace Dayslice.Lite {
 
 		public MainWindow (Gtk.Application owner) {
 			GLib.Object (application: owner);
-			wire_state_debug ();
+			wire_states ();
 			on_entered_idle ();
 			Timeout.add_seconds (60, this.on_tick);
 		}
@@ -72,7 +72,7 @@ namespace Dayslice.Lite {
 
 		// state machine debugging
 
-		internal void wire_state_debug () {
+		internal void wire_states () {
 			state_machine.entered_idle.connect (on_entered_idle);
 			state_machine.exited_idle.connect (on_exited_idle);
 			state_machine.entered_set.connect (on_entered_set);

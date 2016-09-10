@@ -2,7 +2,7 @@ namespace Dayslice.Lite {
 	public class Application : Gtk.Application {
 		public Application () {
 			Object(application_id: "skrylar.dayslice.lite",
-				   flags: ApplicationFlags.FLAGS_NONE);
+				   flags: 0);
 		}
 
 		internal MainWindow appwin;
