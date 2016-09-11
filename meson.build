@@ -6,6 +6,8 @@ gobject = dependency('gobject-2.0')
 glib = dependency('glib-2.0')
 gtk = dependency('gtk+-3.0')
 gio = dependency('gio-2.0')
+canberra = dependency('libcanberra')
+gcanberra = dependency('libcanberra-gtk3')
 
 python = dependency('python3')
 swig = find_program('swig')
@@ -22,7 +24,7 @@ executable('dayslice-lite', dayslice_files,
     vala_args: ['--vapidir', meson.source_root(), '--pkg', 'posix', '--target-glib=2.38', '--gresources', resource_xml],
     c_args: ['-w'],
     link_args: ['-lm'],
-    dependencies: [gobject, glib, gtk, gio])
+    dependencies: [gobject, glib, gtk, gio, canberra, gcanberra])
 
 # instrumented binary for acceptance tests with robot framework
 rube = swiggle.process ('src/robot.i')
@@ -31,4 +33,4 @@ library('dayslice_lite_roboticized', dayslice_files, 'src/robot.vala', rube,
     c_args: ['-w'],
     link_args: ['-lm'],
     name_prefix: '_',
-    dependencies: [gobject, glib, gtk, gio, python])
+    dependencies: [gobject, glib, gtk, gio, python, canberra, gcanberra])

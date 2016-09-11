@@ -34,9 +34,7 @@ namespace Dayslice {
 		}
 
 		public class GLibNotifier : GLib.Object, UserNotifier {
-			public GLibNotifier () {
-			}
-
+			public GLibNotifier () {}
 			~GLibNotifier () {}
 
 			public void trigger_started (Gtk.Application app) {
@@ -53,6 +51,11 @@ namespace Dayslice {
 				notice.set_priority (GLib.NotificationPriority.URGENT);
 				app.withdraw_notification ("dsl.timer");
 				app.send_notification ("dsl.timer", notice);
+
+				unowned Canberra.Context ctx = CanberraGtk.context_get ();
+				ctx.play (0,
+						  Canberra.PROP_EVENT_ID, "phone-incoming-call",
+						  Canberra.PROP_EVENT_DESCRIPTION, "alarm");
 			}
 
 			public void trigger_withdraw (Gtk.Application app) {

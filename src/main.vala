@@ -16,6 +16,7 @@ namespace Dayslice.Lite {
 				appwin.present ();
 				return;
 			}
+
 			appwin = new MainWindow (this);
 #if !ROBOTICIZED
 			appwin.user_notifier = new GLibNotifier ();
@@ -30,6 +31,7 @@ namespace Dayslice.Lite {
 
 #if ROBOTICIZED
 		public static void activate_testing_rig () {
+
 			var app = new Application ();
 			try {
 				app.register ();
