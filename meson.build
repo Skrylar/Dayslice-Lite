@@ -26,6 +26,10 @@ executable('dayslice-lite', dayslice_files,
     link_args: ['-lm'],
     dependencies: [gobject, glib, gtk, gio, canberra, gcanberra])
 
+executable ('test-minute-humanizer',
+    'src/test_time_humanizer.vala',
+    dependencies: [gobject, glib])
+
 # instrumented binary for acceptance tests with robot framework
 rube = swiggle.process ('src/robot.i')
 library('dayslice_lite_roboticized', dayslice_files, 'src/robot.vala', rube,
