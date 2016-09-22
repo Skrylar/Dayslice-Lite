@@ -81,7 +81,7 @@ namespace Dayslice.Lite {
 				var minutes = (int)timeout_adjustment.value * 5;
 				expiry = time_provider.now ();
 				expiry = expiry.add_minutes (minutes);
-				remaining_label.label = "%d minutes".printf (minutes);
+				remaining_label.label = TimeHumanizer.from_minutes (minutes);
 				expiry_label.label = expiry.format ("%l:%M %p");
 				state_machine.send (FSM.Message.CHANGE_TIMEOUT);
 			}
@@ -148,7 +148,7 @@ namespace Dayslice.Lite {
 				var diff = expiry.difference (now) / TimeSpan.MINUTE;
 				if (diff > 1) {
 					// TODO make sure window is on the screen
-					remaining_label.label = "%d minutes".printf ((int)diff);
+					remaining_label.label = TimeHumanizer.from_minutes ((int)diff);
 					if (diff % 5 == 0) {
 						var value = (diff / 5);
 						if (value < 0.1) {
